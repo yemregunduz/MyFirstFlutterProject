@@ -5,25 +5,24 @@ import 'package:temel_widget/main.dart';
 import 'package:temel_widget/models/student.dart';
 import 'package:temel_widget/validation/student_validator.dart';
 
-class StudentAdd extends StatefulWidget {
-  late List<Student> students;
-  StudentAdd(List<Student> students) {
-    this.students = students;
+class StudentEdit extends StatefulWidget {
+  late Student selectedStudent;
+  StudentEdit(Student selectedStudent) {
+    this.selectedStudent = selectedStudent;
   }
   @override
   State<StatefulWidget> createState() {
     // ignore: no_logic_in_create_state
-    return _StudentAddState(students);
+    return _StudentAddState(selectedStudent);
   }
 }
 
 
 class _StudentAddState extends State with StudentValidationMixIn {
-  late List<Student> students;
-  var student = Student.withoutInfo();
+  late Student selectedStudent;
   var formKey = GlobalKey<FormState>();
-  _StudentAddState(List<Student> students) {
-    this.students = students;
+  _StudentAddState(Student selectedStudent) {
+    this.selectedStudent = selectedStudent;
   }
   @override
   Widget build(BuildContext context) {
@@ -57,11 +56,12 @@ class _StudentAddState extends State with StudentValidationMixIn {
         labelStyle: TextStyle(fontWeight: FontWeight.bold),
         hintText: "Yunus Emre",
       ),
+      initialValue: selectedStudent.firstName,
       validator: (String? value) {
         return validateFirstName(value.toString());
       },
       onSaved: (String? value) {
-        student.firstName = value.toString();
+        selectedStudent.firstName = value.toString();
       },
     );
   }
@@ -72,12 +72,14 @@ class _StudentAddState extends State with StudentValidationMixIn {
         labelText: "Öğrenci soyadı",
         labelStyle: TextStyle(fontWeight: FontWeight.bold),
         hintText: "Gündüz",
+        
       ),
+      initialValue: selectedStudent.lastName,
       validator: (String? value) {
         return validateLastName(value.toString());
       },
       onSaved: (String? value) {
-        student.lastName = value.toString();
+        selectedStudent.lastName = value.toString();
       },
     );
   }
@@ -89,22 +91,22 @@ class _StudentAddState extends State with StudentValidationMixIn {
         labelStyle: TextStyle(fontWeight: FontWeight.bold),
         hintText: "95",
       ),
+      initialValue: selectedStudent.grade.toString(),
       validator: (String? value) {
         return validateGrade(value.toString());
       },
       onSaved: (String? value) {
-        student.grade = int.parse(value.toString());
+        selectedStudent.grade = int.parse(value.toString());
       },
     );
   }
 
   Widget buildSubmitButton() {
     return OutlinedButton (
-      child: Text("Kaydet"),
+      child: Text("Güncelle"),
       onPressed: () {
           if (formKey.currentState!.validate()) {
           formKey.currentState!.save();
-          students.add(student);
           Navigator.push(context, MaterialPageRoute(builder: (context)=> MyApp()));
         }
       },

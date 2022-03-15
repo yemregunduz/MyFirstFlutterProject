@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:temel_widget/models/student.dart';
+import 'package:temel_widget/screens/student-edit.dart';
 import 'package:temel_widget/screens/student_add.dart';
 
 List<Student> students = [
@@ -105,8 +106,10 @@ class _MyAppState extends State<MyApp> {
                       ],
                     ),
                     onPressed: () {
-                      var message = "güncellendi";
-                      showMessage(message, context);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => StudentEdit(selectedStudent)));
                     },
                   ),
                 ),
